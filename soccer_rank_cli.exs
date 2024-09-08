@@ -1,5 +1,5 @@
 defmodule SoccerRankCLI do
-  defp parse_args(args) do
+  def parse_args(args) do
     {opts, _, _} =
       OptionParser.parse(args,
         aliases: [f: :input_path, o: :output_path, t: :filetype],
@@ -15,8 +15,8 @@ defmodule SoccerRankCLI do
   def read_input(input), do: File.stream!(input) |> Stream.map(&String.trim/1)
 end
 
-{input_path, output_path, filetype} = parse_args(System.argv())
+{input_path, output_path, filetype} = SoccerRankCLI.parse_args(System.argv())
 
-lines = read_input(input_path)
+lines = SoccerRankCLI.read_input(input_path)
 
 SoccerRank.invoke(lines, output_path, filetype)
