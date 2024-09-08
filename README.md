@@ -1,21 +1,24 @@
-# SoccerRank
+# Soccer rank problem
 
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `soccer_rank` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:soccer_rank, "~> 0.1.0"}
-  ]
-end
+## Usage
+### Running the script
+This script can take input from arguments or stdin, see below examples.
+1. Examples:
+```bash
+$mix run soccer_rank_cli.exs -f sample-input.txt -o output.txt -t txt
+$cat sample-input.txt | mix run soccer_rank_cli.exs -o output.html -t html
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/soccer_rank>.
-
+2. Arguments:
+```
+-f FILE         Path to the input file
+-o FILE         Path to the output file
+-t FORMAT       Output file format (html/txt)
+```
+## Running the tests
+To run the tests, use the following command:
+```bash
+$mix test
+```
+## The problem
+- [Gist](https://gist.github.com/linhchauatx/e8f36f8fbdc95b957d7b86fa10b68b02)
