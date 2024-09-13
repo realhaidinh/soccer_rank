@@ -1,22 +1,22 @@
 defmodule SoccerRank do
   def invoke(lines, output_path, filetype) do
-    point_list = SoccerRank.export_teams_with_point(lines)
+    point_list = export_teams_with_point(lines)
 
-    team_sorter = fn ({a, point_a}, {b, point_b}) ->
+    team_sorter = fn {a, point_a}, {b, point_b} ->
       if(point_a == point_b, do: a < b, else: point_a > point_b)
     end
 
     sorted_rank_list =
-      SoccerRank.sort_team_and_assign_ranks(point_list, team_sorter)
+      sort_team_and_assign_ranks(point_list, team_sorter)
 
-    formatted_text = SoccerRank.render_rank_table(sorted_rank_list, "txt")
-    IO.puts(formatted_text)
+    formatted_text = render_rank_table(sorted_rank_list, "txt")
+    IO.write(formatted_text)
 
     if output_path != nil && filetype != nil do
       content =
-        if(filetype == "txt",
-          do: formatted_text,
-          else: SoccerRank.render_rank_table(sorted_rank_list, "html")
+        if(filetype == "html",
+          do: render_rank_table(sorted_rank_list, "html"),
+          else: formatted_text
         )
 
       File.write!(output_path, content)
@@ -49,24 +49,29 @@ defmodule SoccerRank do
   def sort_team_and_assign_ranks(data, sorter) do
     data
     |> Enum.sort(sorter)
-    |> Enum.with_index(1)
-    |> Enum.map_reduce({1, -1}, fn {{cur_team, cur_point}, idx}, {prev_rank, prev_point} ->
+    |> Enum.map_reduce({1, -1, 1}, fn {cur_team, cur_point}, {prev_rank, prev_point, idx} ->
       cur_rank = if cur_point == prev_point, do: prev_rank, else: idx
-      {{cur_rank, cur_team, cur_point}, {cur_rank, cur_point}}
+      {{cur_rank, cur_team, cur_point}, {cur_rank, cur_point, idx + 1}}
     end)
     |> elem(0)
   end
 
   def render_rank_table(rank_list, "html") do
-    table = rank_list
-    |> Enum.map(fn ({rank, team, point}) -> "<tr><td>#{rank}</td><td>#{team}</td><td>#{point}</td></tr>" end)
-    |> Enum.join("\n")
+    table =
+      rank_list
+      |> Enum.map(fn {rank, team, point} ->
+        "<tr><td>#{rank}</td><td>#{team}</td><td>#{point}</td></tr>"
+      end)
+      |> Enum.join("\n")
+
     "<table>\n<tr><th>Rank</th><th>Team</th><th>Point</th></tr>\n#{table}\n</table>"
   end
 
   def render_rank_table(rank_list, "txt") do
     rank_list
-    |> Enum.map(fn ({rank, team, point}) -> "#{rank}. #{team}, #{point} pt#{if(point != 1, do: "s", else: "")}" end)
+    |> Enum.map(fn {rank, team, point} ->
+      "#{rank}. #{team}, #{point} pt#{if(point != 1, do: "s", else: "")}"
+    end)
     |> Enum.join("\n")
   end
 end

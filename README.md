@@ -5,7 +5,9 @@
 This script can take input from arguments or stdin, see below examples.
 1. Examples:
 ```bash
+# via arguments
 $mix run soccer_rank_cli.exs -f sample-input.txt -o output.txt -t txt
+# via stdin
 $cat sample-input.txt | mix run soccer_rank_cli.exs -o output.html -t html
 ```
 
