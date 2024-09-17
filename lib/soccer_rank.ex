@@ -1,4 +1,4 @@
-defmodule SoccerRank do
+defmodule SoccerRankSerivce do
   def invoke(lines, output_path, filetype) do
     point_list = export_teams_with_point(lines)
 

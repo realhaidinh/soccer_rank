@@ -1,10 +1,15 @@
-defmodule SoccerRankCLI do
-  def main(args) do
-    {input_path, output_path, filetype} = SoccerRankCLI.parse_args(args)
+defmodule Mix.Tasks.SoccerRank do
+  @moduledoc "Soccer Rank CLI application"
 
-    lines = SoccerRankCLI.read_input(input_path)
+  use Mix.Task
 
-    SoccerRank.invoke(lines, output_path, filetype)
+  @impl Mix.Task
+  def run(args) do
+    {input_path, output_path, filetype} = parse_args(args)
+
+    lines = read_input(input_path)
+
+    SoccerRankSerivce.invoke(lines, output_path, filetype)
   end
 
   def parse_args(args) do
@@ -22,5 +27,3 @@ defmodule SoccerRankCLI do
 
   def read_input(input), do: File.stream!(input) |> Stream.map(&String.trim/1)
 end
-
-SoccerRankCLI.main(System.argv())
