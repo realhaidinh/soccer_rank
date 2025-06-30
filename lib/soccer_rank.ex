@@ -60,18 +60,18 @@ defmodule SoccerRankSerivce do
     table =
       rank_list
       |> Enum.map(fn {rank, team, point} ->
-        "<tr><td>#{rank}</td><td>#{team}</td><td>#{point}</td></tr>"
+        ["<tr><td>", inspect(rank), "</td><td>", team, "</td><td>", inspect(point), "</td></tr>"]
       end)
-      |> Enum.join("\n")
+      |> Enum.intersperse("\n")
 
-    "<table>\n<tr><th>Rank</th><th>Team</th><th>Point</th></tr>\n#{table}\n</table>"
+    ["<table>\n<tr><th>Rank</th><th>Team</th><th>Point</th></tr>\n", table ,"\n</table>"]
   end
 
   def render_rank_table(rank_list, "txt") do
     rank_list
     |> Enum.map(fn {rank, team, point} ->
-      "#{rank}. #{team}, #{point} pt#{if(point != 1, do: "s", else: "")}"
+      [inspect(rank), ". ", team, ", ", inspect(point), " pt", if(point != 1, do: "s", else: "")]
     end)
-    |> Enum.join("\n")
+    |> Enum.intersperse("\n")
   end
 end
