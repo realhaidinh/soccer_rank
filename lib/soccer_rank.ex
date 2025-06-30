@@ -33,8 +33,8 @@ defmodule SoccerRankSerivce do
       {point_a, point_b} = calculate_point(String.to_integer(score_a), String.to_integer(score_b))
 
       result
-      |> Map.put(team_a, Map.get(result, team_a, 0) + point_a)
-      |> Map.put(team_b, Map.get(result, team_b, 0) + point_b)
+      |> Map.update(team_a, point_a, &(&1 + point_a))
+      |> Map.update(team_b, point_b, &(&1 + point_b))
     end)
   end
 
